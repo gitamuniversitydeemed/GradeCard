@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Card - Semester 5</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border: 2px solid #000;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header, .footer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1, .header h2, .header h3 {
+            color: #800000;
+        }
+        .header img {
+            display: block;
+            margin: 0 auto 10px auto;
+            height: 100px;
+        }
+        .form-section {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .form-section input {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            width: 300px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .form-section button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #800000;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .form-section button:hover {
+            background-color: #990000;
+        }
+        .cgpa-sgpa {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .print-button {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .print-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #800000;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .print-button button:hover {
+            background-color: #990000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Input Form -->
+    <div id="input-container" class="container">
+        <div class="header">
+            <img src="C:/Users/tarun/OneDrive/Desktop/GITAM/Institute Logo.png" alt="Institute Logo">
+            <h1>Enter Registration Details</h1>
+        </div>
+        <div class="form-section">
+            <input type="text" id="regNo" placeholder="Enter your registration number">
+            <input type="text" id="name" placeholder="Enter your name">
+            <button onclick="showGradeCard()">Submit</button>
+        </div>
+    </div>
+
+    <!-- Grade Card -->
+    <div id="grade-card-container" class="container" style="display: none;">
+        <div class="header">
+            <img src="C:/Users/tarun/OneDrive/Desktop/GITAM/Institute Logo.png" alt="Institute Logo">
+            <h2 class=>GANDHI INSTITUTE OF TECHNOLOGY AND MANAGEMENT<h2>
+            <h3>(Deemed to be University)</h3>
+            <h2>GRADE CARD</h2>
+            <p>B.Tech Degree Examination<br>Semester 5, December 2024</p>
+        </div>
+
+        <div class="details">
+            <p><strong>Regd. No:</strong> <span id="regdNoDisplay"></span></p>
+            <p><strong>Name:</strong> <span id="nameDisplay"></span></p>
+            <p><strong>Branch:</strong> Computer Science and Engineering</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody id="gradesTable">
+                <tr>
+                    <td>24CSEN1051</td>
+                    <td>Intermediate Coding</td>
+                    <td>-</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CLAD2001</td>
+                    <td>Preparation For Campus Placement-1 (Soft Skills 5A)</td>
+                    <td>1</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CSEN2011</td>
+                    <td>Computer Organization and Architecture</td>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CSEN2031</td>
+                    <td>Artificial Intelligence</td>
+                    <td>4</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CSEN3001</td>
+                    <td>Design and analysis of algorithms</td>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CSEN2061</td>
+                    <td>Database Management Systems</td>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CSEN3171</td>
+                    <td>ADVANCES IN INTERNET OF THINGS</td>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>FINA1031</td>
+                    <td>Principles and Practice of Banking</td>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>FINA2001</td>
+                    <td>Essentials Financial Management</td>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="cgpa-sgpa">
+            <p>SGPA: <span id="sgpa"></span></p>
+            <p>CGPA: <span id="cgpa"></span></p>
+        </div>
+
+        <div class="footer">
+            <p>Printed on: <span id="printDate"></span></p>
+            <p>Note: This is a digitally generated grade card. For any clarifications, contact the examination office.</p>
+        </div>
+
+        <div class="print-button">
+            <button onclick="window.print()">Print</button>
+        </div>
+    </div>
+
+    <script>
+    function getRandomGrade() {
+        const grades = ["A", "B+", "B", "C", "F"];
+        return grades[Math.floor(Math.random() * grades.length)];
+    }
+
+    function ensureTwoFails(gradeCells) {
+        let grades = [];
+        let failCount = 0;
+
+        // Assign random grades and count "F"
+        gradeCells.forEach(() => {
+            const grade = getRandomGrade();
+            grades.push(grade);
+            if (grade === "F") {
+                failCount++;
+            }
+        });
+
+        // If there are fewer than 2 "F"s, ensure at least 2
+        while (failCount < 2) {
+            const randomIndex = Math.floor(Math.random() * grades.length);
+            if (grades[randomIndex] !== "F") {
+                grades[randomIndex] = "F";
+                failCount++;
+            }
+        }
+
+        // Update the grade cells in the table
+        gradeCells.forEach((cell, index) => {
+            cell.textContent = grades[index];
+        });
+    }
+
+    function getRandomCGPA() {
+        return (Math.random() * (6.2 - 4.97) + 4.97).toFixed(2);
+    }
+
+    function showGradeCard() {
+        const regNo = document.getElementById("regNo").value;
+        const name = document.getElementById("name").value;
+
+        if (!regNo || !name) {
+            alert("Please enter both registration number and name!");
+            return;
+        }
+
+        // Update Registration Number and Name
+        document.getElementById("regdNoDisplay").textContent = regNo;
+        document.getElementById("nameDisplay").textContent = name;
+
+        // Select grade cells
+        const gradeCells = document.querySelectorAll("#gradesTable td:last-child");
+
+        // Assign random grades ensuring at least 2 "F" grades
+        ensureTwoFails(gradeCells);
+
+        // Generate Random SGPA and CGPA
+        document.getElementById("sgpa").textContent = getRandomCGPA();
+        document.getElementById("cgpa").textContent = getRandomCGPA();
+
+        // Update Print Date
+        document.getElementById("printDate").textContent = new Date().toLocaleDateString();
+
+        // Show Grade Card and Hide Input Form
+        document.getElementById("input-container").style.display = "none";
+        document.getElementById("grade-card-container").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
